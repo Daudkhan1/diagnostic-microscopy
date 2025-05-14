@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  microscopy:
+    image: microscopy-frontend:latest
+    environment:
+      - VITE_BASE_URL=https://microscopepraid-ai.com/
+      - VITE_PREVIEW_PASSWORD=Steelglass123!@#
+    ports:
+      - "5173:5173"
+    restart: always

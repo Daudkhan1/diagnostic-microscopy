@@ -1,0 +1,176 @@
+// src/styles/selectedSlide.scss
+
+.selected-slide {
+    display: flex;
+    flex-direction: column;
+    height: 100%; // Assume parent provides height context
+    width: 100%;
+    align-items: center;
+    // padding: 10px; // Padding around the viewer/details
+    gap: 1rem; // Space between viewer and details
+    box-sizing: border-box;
+    background-color: #000000; // Or your theme background
+    border-radius: 22px; // Rounded corners for the whole component area
+
+    // Fullscreen overrides for the component root itself
+    &--fullscreen {
+        padding: 0; // No padding in fullscreen
+        gap: 0; // No gap in fullscreen
+        border-radius: 22px; // No rounded corners
+        background-color: #000; // Often black background for fullscreen image viewers
+    }
+
+
+    .image-viewer-container {
+        position: relative; // Anchor for absolute positioned children (controls, SVG)
+        overflow: hidden;  // Crucial: Clips the zoomed/panned content
+        // background-color: #e0e0e0; // Background shown during letterboxing/pillarboxing
+        border-radius: 1rem; // Rounded corners in normal mode
+        width: 100%;
+        // max-width: 800px;
+        height: 100%;
+        // Or height: 500px; // Example fixed height
+        display: flex; // Used for centering the inner container initially
+        justify-content: center;
+        align-items: center;
+        cursor: default; // Base cursor (JS sets grab/grabbing)
+        flex-shrink: 0; // Prevent shrinking in flex layouts
+        user-select: none; // Prevent text selection during drag
+    
+        // Fullscreen overrides for the viewer container
+        &--fullscreen {
+            border-radius: 22px; // No rounded corners
+            max-width: none; // No max width limit
+            height: 100%; // Take full available height
+            width: 100%; // Take full available width
+            aspect-ratio: unset; // Remove aspect ratio constraint if set above
+            background-color: #000; // Match fullscreen background
+        }
+    }
+}
+
+.selected-slide-placeholder {
+    // Style the placeholder when no image is selected
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    color: #999;
+    background-color: #000;
+    border-radius: 1rem; // Match viewer radius
+    text-align: center;
+}
+
+.image-annotation-container {
+    position: relative; // For SVG overlay positioning
+    width: 100%;    // Fill the viewer container
+    height: 100%;
+    line-height: 0; // Remove potential extra space
+    transform-origin: center center; // Zoom/scale from center
+    display: flex; // To center image via object-fit: contain
+    justify-content: center;
+    align-items: center;
+    will-change: transform; // Performance hint for transforms
+    overflow: hidden; // Hide potential minor overflows from transforms/scaling
+}
+
+.full-width-slide-image {
+    display: block; // Remove extra space below image
+    width: 100%;    // Fit width within container
+    height: 100%;   // Fit height within container
+    object-fit: contain; // Scale image down preserving aspect ratio
+    pointer-events: auto; // Receive mouse events to initiate drag
+}
+
+.annotation-svg-overlay {
+    // Base styles (most are inline for positioning/viewbox)
+    rect.annotation-rect { // Target rects within the SVG
+        // transition: stroke-width 0.15s ease-in-out; // Smooth transition for active state change
+        stroke-width: 8;
+        border-width: 2px;
+
+        &.active {
+           // stroke-width: 4; // Handled inline now, but could add other styles
+           // e.g., filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.7));
+           stroke-width: 10;
+        }
+    }
+}
+
+.image-controls {
+    position: absolute;
+    bottom: 15px; // Slightly more padding from edge
+    right: 15px;
+    background-color: rgba(0, 0, 0, 0.6); // Slightly darker base
+    border-radius: 8px;
+    padding: 8px; // Slightly more padding
+    display: flex;
+    gap: 8px; // Slightly more gap
+    z-index: 10; // Ensure controls are above image/SVG
+
+    button {
+        background: rgba(255, 255, 255, 0.9); // Brighter buttons
+        border: none;
+        border-radius: 5px; // Slightly rounder
+        padding: 8px; // Slightly larger buttons
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+        color: #222; // Darker icon/text
+        font-weight: bold;
+        line-height: 1; // Ensure text like '1x' aligns well
+
+        &:hover:not(:disabled) {
+            background-color: rgba(255, 255, 255, 1);
+            transform: scale(1.05); // Slight scale on hover
+        }
+
+        &:active:not(:disabled) {
+             transform: scale(0.98); // Slight press effect
+        }
+
+        &:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        svg {
+            width: 20px; // Adjusted size
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+    }
+
+    // Fullscreen overrides for controls
+    &--fullscreen {
+        // Example: Make controls slightly more prominent or different style
+        background-color: rgba(20, 20, 20, 0.75);
+        bottom: 20px;
+        right: 20px;
+        border-radius: 22px;
+
+        button {
+            // background: rgba(50, 50, 50, 0.85);
+            color: #eee;
+
+            &:hover:not(:disabled) {
+                background-color: rgba(70, 70, 70, 1);
+            }
+            svg {
+                stroke: #eee;
+            }
+        }
+    }
+}
+
+// Styles for the optional Collapse details area
+.slide-details-container {
+    width: 100%;
+    max-width: 800px; // Match viewer max-width in normal mode
+    flex-shrink: 0; // Prevent shrinking
+    padding: 0 10px; // Add padding if parent .selected-slide padding is removed
+}

@@ -1,0 +1,132 @@
+// src/styles/annotationsPanel.scss
+
+.annotations-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; // Space between thumbnails
+  padding: 0.5rem; // Padding inside the panel
+  // Consider max-height based on container, not just vh.
+  // max-height: calc(100vh - 200px); // Example max height, adjust as needed
+  max-height: 400px; // Example fixed max-height, adjust as needed
+  overflow-y: auto; // Allow scrolling if content exceeds height
+  background-color: #fff; // Give the scrollable area a background
+
+  .annotation-thumbnail {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    font-family: 'Inter', sans-serif;
+
+    &:hover {
+      background-color: #f0f0f0;
+      border-color: #cccccc;
+    }
+
+    // Style for the active thumbnail
+    &.active {
+      background-color: #e7f1ff; // Light blue background
+      border-color: #3F8BFD; // Blue border matching theme
+      box-shadow: 0 0 0 2px rgba(63, 139, 253, 0.3); // Subtle glow
+    }
+
+    &:focus, &:focus-visible { // Use focus-visible for better accessibility
+      outline: none; // Remove default outline
+      border-color: #3F8BFD;
+      box-shadow: 0 0 0 2px rgba(63, 139, 253, 0.3); // Consistent focus style
+    }
+
+
+    .thumbnail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      // margin-bottom: 0.25rem; // Small space below header
+      flex-direction: column;
+      // padding: 10px;
+
+      h5 {
+        font-family: 'Poppins', sans-serif; // Ensure 'Poppins' font is loaded
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 100%;
+        color: #000000;
+        padding: 6px 6px 0 6px; // Adjust padding if needed
+        margin: 0; // Reset default margin
+      }
+
+      p {
+        font-family: 'Inter', sans-serif; // Ensure 'Inter' font is loaded
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 100%;
+        padding: 6px;
+        margin: 0; // Reset default margin
+      }
+
+      span {
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 100%;
+        letter-spacing: 0%;
+        color: #3675d3;
+      }
+    }
+
+    .thumbnail-body { // Styles for thumbnail body if you uncomment it later
+      p {
+        margin: 0;
+        font-size: 0.75rem;
+        color: #666;
+      }
+    }
+  }
+
+  .no-annotations-message {
+    color: #777;
+    text-align: center;
+    padding: 1rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+  }
+}
+
+// Styles for the Card Header containing the Annotations title and Live Preview Button
+// These styles target the classes rendered by the Card component
+.common-card-header {
+  display: flex;
+  justify-content: space-between; // Pushes title left, button right
+  align-items: center; // Vertically align title and button
+  // padding: 0.5rem 1rem; // Add padding to header if needed (adjust based on Card's base styles)
+  // border-bottom: 1px solid #eee; // Optional: Add a separator line
+
+  // Assuming the title is inside a <p class="heading"> as per Card.jsx
+  .heading {
+      margin: 0; // Remove default paragraph margin
+      font-weight: 600; // Example: make heading bold
+  }
+
+  .live-preview-button {
+    background-color: #fff;
+    color: #3F8BFD;
+    padding: 0.6rem 1.25rem;
+    margin-left: 1rem;
+    border: 1px solid #3F8BFD;
+    border-radius: 0.5rem;
+    font-family: 'Inter', sans-serif; // Make sure 'Inter' font is imported/available
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease;
+    flex-shrink: 0; // Prevent shrinking if header space is limited
+    margin-bottom: 11px;
+
+    &:hover {
+      background-color: #3F8BFD;
+      color: #fff;
+    }
+  }
+}

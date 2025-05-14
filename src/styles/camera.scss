@@ -1,0 +1,122 @@
+// camera.scss
+.camera {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: relative; // Needed for absolute positioning of children
+    // padding: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: #fff;
+    border-radius: 22px;
+
+    // Status Tag Styling
+    .camera-status {
+        position: absolute;
+        top: 15px; // Adjust as needed
+        right: 15px; // Adjust as needed
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: white;
+        z-index: 10; // Ensure it's above the video and potentially the p tag if needed
+
+        &.loading {
+            background-color: #ffa500; // Orange for loading
+        }
+
+        &.ready {
+            background-color: #28a745; // Green for ready
+        }
+
+        &.processing {
+            background-color: #007bff; // Blue for processing
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+    }
+
+    video {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        background: black;
+    }
+
+    p {
+        position: absolute; // Take it out of the normal flow
+        bottom: 20px;      // Position it 20px from the bottom of .camera
+        left: 15px;
+        right: 15px;
+        z-index: 5;
+
+        // Optional: Add background/padding for better readability over video
+        background-color: rgba(0, 0, 0, 0.5); // Semi-transparent black background
+        color: #fff;          // White text for contrast
+        padding: 8px 15px;    // Add some internal padding
+        border-radius: 5px;  // Optional: slightly rounded corners
+
+        // Keep text centered within its own block
+        text-align: center;
+    }
+
+    .controls { // Example: Add a div around buttons if needed
+        display: flex;
+        justify-content: center;
+        margin-top: 15px; // Space above the buttons
+        width: 100%; // Take full width for centering
+        position: relative; // Keep controls in flow relative to video
+        z-index: 5; // Match or be above the paragraph if needed
+    }
+
+
+    button.button { // More specific selector
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+        min-width: 88px;
+        height: 40px;
+        border-radius: 8px;
+        padding: 8px 10px;
+        border: 1px solid #E6E6E6;
+        cursor: pointer;
+        background-color: #f8f9fa;
+        transition: background-color 0.2s ease, opacity 0.2s ease; // Add opacity transition
+
+        .btn-text {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 24px;
+            vertical-align: middle;
+            color: #2B5DA9;
+        }
+
+        &:hover:not(:disabled) {
+            background-color: #e9ecef;
+        }
+
+        &:disabled {
+             cursor: not-allowed;
+             opacity: 0.6;
+             background-color: #e9ecef;
+        }
+    }
+}
+
+// Optional pulsing animation for processing status
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 1;
+    }
+}

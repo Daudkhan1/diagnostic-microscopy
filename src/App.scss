@@ -1,0 +1,83 @@
+@import "./styles/common";
+
+html {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+
+    &:before,
+    &:after {
+      box-sizing: border-box;
+    }
+  }
+
+  body {
+    background: $app-background-iceblue;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+
+    h3 {
+      font-weight: 400;
+      font-size: 48px;
+      line-height: 1.167;
+      color: white;
+    }
+
+    a {
+      cursor: pointer;
+      text-decoration: none;
+      color: $primary;
+    }
+  }
+
+body.app-fullscreen {
+  overflow: hidden; // Prevent scrolling the body when app is fullscreen
+
+  // Hide the Navbar
+  .navbar { // Use the actual class name of your Navbar component
+    display: none !important; // Use important if necessary to override specificty
+  }
+
+  // Adjust LivePreview layout
+  .live-preview {
+    padding-top: 10px;
+    height: 100vh; // Make live preview take full viewport height
+    flex-direction: row; // Ensure row layout if it wasn't already
+    margin-top: 0;
+
+    .left-panel {
+      // Option 1: Keep annotations panel, maybe resize
+      flex: 0 0 350px; // Give it a fixed or percentage width
+      max-width: 350px;
+      height: 100%; // Take full height
+      overflow-y: auto; // Allow scrolling
+
+      // Option 2: Hide annotations panel completely in fullscreen
+      // display: none;
+    }
+
+    .camera-section {
+       flex-grow: 1; // Let the slide area take remaining space
+       height: 100%; // Take full height
+       padding: 0; // Remove default padding if any
+
+        // Ensure the Card component inside takes full height
+       > .card { // Assuming Card is direct child
+           height: 100%;
+           display: flex;
+           flex-direction: column;
+       }
+    }
+  }
+
+  // Hide other elements if necessary
+  // .some-other-global-element {
+  //   display: none;
+  // }
+}
+  .app-content {
+    padding-top: 70px; /* This ensures content starts below the navbar */
+}
+}
