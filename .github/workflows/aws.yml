@@ -27,16 +27,16 @@ jobs:
       - name: Build and Push Docker Image to ECR
         run: |
           # Log in to ECR
-          aws ecr get-login-password --region ${{ secrets.AMAZON_S3_REGION_NAME }} | docker login --username AWS --password-stdin ${{ secrets.ECR_URI }}
+          ecr get-login-password --region ${{ secrets.AMAZON_S3_REGION_NAME }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AMAZON_S3_REGION_NAME }}.amazonaws.com
 
           # Build Docker image
-          docker build -t ${{ secrets.ECR_URI }}:latest .
+          docker build -t microscopy-frontend:latest .
 
           # Tag the image
-          docker tag ${{ secrets.ECR_URI }}:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AMAZON_S3_REGION_NAME }}.amazonaws.com/${{ secrets.ECR_URI }}:latest
+          docker tag diagnostic-anonymizer:dev ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AMAZON_S3_REGION_NAME }}.amazonaws.com/microscopy-frontend:latest
 
           # Push the Docker image to ECR
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AMAZON_S3_REGION_NAME }}.amazonaws.com/${{ secrets.ECR_URI }}:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AMAZON_S3_REGION_NAME }}.amazonaws.com/microscopy-frontend:latest
 
       # Step 4: Upload docker-compose.yml to S3
       - name: Upload docker-compose.yml to S3
