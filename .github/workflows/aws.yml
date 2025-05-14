@@ -27,7 +27,7 @@ jobs:
       - name: Build and Push Docker Image to ECR
         run: |
           # Log in to ECR
-          ecr get-login-password --region ${{ secrets.AMAZON_S3_REGION_NAME }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AMAZON_S3_REGION_NAME }}.amazonaws.com
+          aws ecr get-login-password --region ${{ secrets.AMAZON_S3_REGION_NAME }} | docker login --username AWS --password-stdin ${{ secrets.ECR_URI }}
 
           # Build Docker image
           docker build -t microscopy-frontend:latest .
