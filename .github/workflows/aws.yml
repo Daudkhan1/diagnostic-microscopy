@@ -33,7 +33,7 @@ jobs:
           docker build -t microscopy-frontend:latest .
 
           # Tag the image
-          docker tag diagnostic-anonymizer:dev ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AMAZON_S3_REGION_NAME }}.amazonaws.com/microscopy-frontend:latest
+          docker tag microscopy-frontend:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AMAZON_S3_REGION_NAME }}.amazonaws.com/microscopy-frontend:latest
 
           # Push the Docker image to ECR
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AMAZON_S3_REGION_NAME }}.amazonaws.com/microscopy-frontend:latest
