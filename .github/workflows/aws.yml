@@ -54,6 +54,7 @@ jobs:
           # Assign GitHub secrets to shell variables
           S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}
           REGION=${{ secrets.AMAZON_S3_REGION_NAME }}
+          ECR_URI=${{ secrets.ECR_URI }}
           AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }}
           INSTANCE_ID=i-0747655acaebfa7a7
 
