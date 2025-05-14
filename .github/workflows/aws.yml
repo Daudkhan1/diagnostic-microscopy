@@ -47,6 +47,27 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AMAZON_S3_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AMAZON_S3_REGION_NAME }}
 
+      # Step 4: Copy docker-compose.yml from S3 to EC2
+      - name: Copy docker-compose.yml from S3 to EC2
+        run: |
+          COMMAND_ID=$(aws ssm send-command \
+            --document-name "AWS-RunShellScript" \
+            --targets "Key=instanceIds,Values=i-0747655acaebfa7a7" \
+            --parameters "commands=[
+              'set -e',
+
+              'echo Downloading docker-compose.yml from S3...',
+              'aws s3 cp s3://{{ secrets.S3_BUCKET_NAME }}/docker-compose.yml /home/ubuntu/docker-compose.yml --region ${{ secrets.AMAZON_S3_REGION_NAME }}',
+
+              'echo Finished copying docker-compose.yml!'
+            ]" \
+            --comment "Copy docker-compose.yml to EC2" \
+            --region ${{ secrets.AMAZON_S3_REGION_NAME }} \
+            --query "Command.CommandId" --output text)
+
+          echo "SSM Command ID: $COMMAND_ID"
+
+
       # Step 5: Deploy Docker on EC2 via SSM
       - name: Deploy Docker on EC2 via SSM
         run: |
