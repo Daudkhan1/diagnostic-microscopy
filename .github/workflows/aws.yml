@@ -1,3 +1,4 @@
+
 name: Deploy to EC2 using AWS CLI
 
 on:
@@ -5,6 +6,9 @@ on:
     branches:
       - "main"
       - "rollback"
+
+env:
+  IMAGE_TAG: v100   # put your desired image tag here
 
 jobs:
   deploy-master:
@@ -30,16 +34,21 @@ jobs:
           # Log in to ECR
           aws ecr get-login-password --region ${{ secrets.AMAZON_S3_REGION_NAME }} | docker login --username AWS --password-stdin ${{ secrets.ECR_URI }}
 
-          # Build Docker image
-          docker build -t microscopy-frontend:v1 .
+          # Build Docker image with dynamic tag
+          docker build -t microscopy-frontend:${{ env.IMAGE_TAG }} .
 
-          # Tag the image
-          docker tag microscopy-frontend:v1 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AMAZON_S3_REGION_NAME }}.amazonaws.com/microscopy-frontend:v1
+          # Tag the image for ECR
+          docker tag microscopy-frontend:${{ env.IMAGE_TAG }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AMAZON_S3_REGION_NAME }}.amazonaws.com/microscopy-frontend:${{ env.IMAGE_TAG }}
 
-          # Push the Docker image to ECR
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AMAZON_S3_REGION_NAME }}.amazonaws.com/microscopy-frontend:v1
+          # Push the Docker image to ECR with dynamic tag
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AMAZON_S3_REGION_NAME }}.amazonaws.com/microscopy-frontend:${{ env.IMAGE_TAG }}
 
-      # Step 4: Upload docker-stack.yml to S3 (Swarm stack file)
+      # Step 4: Update docker-stack.yml with the new tag
+      - name: Update docker-stack.yml with dynamic tag
+        run: |
+          sed -i "s|\(image: .*/microscopy-frontend:\).*|\1${{ env.IMAGE_TAG }}|" docker-stack.yml
+
+      # Step 5: Upload docker-stack.yml to S3 (Swarm stack file)
       - name: Upload docker-stack.yml to S3
         run: |
           aws s3 cp docker-stack.yml s3://${{ secrets.S3_BUCKET_NAME }}/docker-stack.yml --region ${{ secrets.AMAZON_S3_REGION_NAME }}
