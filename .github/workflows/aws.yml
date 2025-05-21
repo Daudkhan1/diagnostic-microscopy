@@ -31,13 +31,13 @@ jobs:
           aws ecr get-login-password --region ${{ secrets.AMAZON_S3_REGION_NAME }} | docker login --username AWS --password-stdin ${{ secrets.ECR_URI }}
 
           # Build Docker image
-          docker build -t microscopy-frontend:latest .
+          docker build -t microscopy-frontend:v1 .
 
           # Tag the image
-          docker tag microscopy-frontend:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AMAZON_S3_REGION_NAME }}.amazonaws.com/microscopy-frontend:latest
+          docker tag microscopy-frontend:v1 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AMAZON_S3_REGION_NAME }}.amazonaws.com/microscopy-frontend:v1
 
           # Push the Docker image to ECR
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AMAZON_S3_REGION_NAME }}.amazonaws.com/microscopy-frontend:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AMAZON_S3_REGION_NAME }}.amazonaws.com/microscopy-frontend:v1
 
       # Step 4: Upload docker-stack.yml to S3 (Swarm stack file)
       - name: Upload docker-stack.yml to S3
