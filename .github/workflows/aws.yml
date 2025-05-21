@@ -72,8 +72,6 @@ jobs:
               'echo Deploying with Docker Stack...',
               'sudo docker stack deploy -c /home/ubuntu/docker-stack.yml --with-registry-auth microscopy-frontend',
               'echo Deployment complete!'
-              'echo Cleaning up unused images...',
-              'docker system prune -f || true',
             ]" \
             --comment "Swarm Deployment with Zero Downtime" \
             --region "$REGION" \
