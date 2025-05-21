@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   microscopy:
-    image: 831926608672.dkr.ecr.ap-south-1.amazonaws.com/microscopy-frontend:latest
+    image: 831926608672.dkr.ecr.ap-south-1.amazonaws.com/microscopy-frontend:v1
     environment:
       - VITE_BASE_URL=https://microscopepraid-ai.com/
       - VITE_PREVIEW_PASSWORD=Steelglass123!@#
